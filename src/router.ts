@@ -36,13 +36,13 @@ export const routes: RouteRecordRaw[] = [
     }
   },
   {
-    name: 'GROUP_HOME',
-    path: '/group-home',
-    component: GroupPage
-  },
-  {
     name: 'SOLUTION_PAGE',
     path: '/solution',
     component: SolutionPage
+  },
+  {
+    name: 'GROUP_PAGE',
+    path: '/group/:id',
+    component: GroupPage
   }
 ]

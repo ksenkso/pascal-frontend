@@ -1,39 +1,48 @@
 <template>
   <Page title="Группы">
     <template #header>
-      <UserInfo :user="{ name: 'Иванов И.' }"/>
+      <UserInfo :user="currentUser"/>
     </template>
     <template #aside>
       <nav>
         <ul>
           <li>
-            <a href="#">Главная</a>
+            <router-link to="/">Главная</router-link>
           </li>
           <li>
-            <a href="#">Мои задачи</a>
-          </li>
-          <li>
-            <a href="#">Мои предметы</a>
-          </li>
-          <li>
-            <a href="#">Мои подписки</a>
-          </li>
-          <li>
-            <a href="#">Мои преподаватели</a>
+            <router-link to="/groups">Мои группы</router-link>
           </li>
         </ul>
       </nav>
     </template>
-    <h1>Группа 7 "А"</h1>
-    <ul class="list">
-      <li v-for="name in names" class="list-item">
-        <a href="#">{{name}}</a>
-        <div class="controls">
-          <BasicButton type="primary">Решения</BasicButton>
-          <BasicButton type="danger">Удалить</BasicButton>
+    <FadeTransition>
+      <div v-if="copyPopupVisible" class="copy-popup">
+        <div class="copy-popup-content">
+          <p>Ссылка на регистрацию в группе скопирована в буфер обмена</p>
         </div>
-      </li>
-    </ul>
+      </div>
+    </FadeTransition>
+    <template v-if="groupLoading">
+      Загрузка...
+    </template>
+    <h1 v-if="group">Группа {{ group.name }}</h1>
+    <template v-if="!groupLoading && studentsLoading">
+      Загрузка...
+    </template>
+    <div class="copy-link">
+      <BasicButton @click="copyGroupLink" type="primary">Скопировать ссылку</BasicButton>
+    </div>
+    <template v-if="students">
+      <ul class="list">
+        <li v-for="student in students" class="list-item">
+          <a href="#">{{student.name}}</a>
+          <div class="controls">
+            <BasicButton type="primary">Решения</BasicButton>
+            <BasicButton type="danger">Удалить</BasicButton>
+          </div>
+        </li>
+      </ul>
+    </template>
   </Page>
 </template>
 
@@ -42,19 +51,45 @@
 import Page from '~/components/common/Page.vue';
 import UserInfo from '~/components/UserInfo.vue';
 import BasicButton from '~/components/common/BasicButton.vue';
+import { useCurrentUser } from '~/composables/useCurrentUser';
+import { onMounted, ref } from 'vue';
+import { Group } from '~/api/groups';
+import { apiClient } from '~/api';
+import { useRoute } from 'vue-router';
+import { useLoading } from '~/composables/useLoading';
+import { Student } from '~/api/users';
+import FadeTransition from '~/components/common/FadeTransition.vue';
+import { copyTextToClipboard } from '~/utils';
 
-const names = [
-  'Зимина Анна',
-  'Ильин Руслан',
-  'Савицкий Максим',
-  'Денисова Ольга',
-  'Титова Виктория',
-  'Федорова Елизавета',
-  'Тарасов Роберт',
-  'Алексеев Кирилл',
-  'Максимов Лев',
-  'Крючкова Елизавета',
-].sort()
+const { currentUser } = useCurrentUser();
+const route = useRoute();
+const group = ref<Group | undefined>();
+const getGroup = () => apiClient.groups.getById(route.params.id as string);
+const { isLoading: groupLoading, run: loadGroup } = useLoading(getGroup);
+
+const students = ref<Student[] | undefined>();
+const getStudents = () => apiClient.groups.getStudents(route.params.id as string);
+const { isLoading: studentsLoading, run: loadStudents } = useLoading(getStudents);
+
+function createGroupLink(id: string) {
+  return `${window.location.origin}/register-student?groupId=${id}`;
+}
+
+const copyPopupVisible = ref(false);
+const copyGroupLink = () => {
+  copyTextToClipboard(createGroupLink(group.value!._id))
+      .then(() => {
+        copyPopupVisible.value = true;
+        setTimeout(() => copyPopupVisible.value = false, 2000);
+      })
+}
+
+onMounted(() => {
+  loadGroup()
+      .then((g) => group.value = g);
+  loadStudents()
+      .then((s) => students.value = s);
+});
 </script>
 
 <style scoped lang="scss">
@@ -129,5 +164,28 @@ nav ul {
   padding: 12px;
   text-decoration: none;
   color: $dark-blue;
+}
+
+.copy-popup {
+  position: fixed;
+  top: 60px;
+  right: 24px;
+  color: black;
+  background-color: lighten($yellow, 10%);
+  border-radius: 4px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  p {
+    padding: 0;
+    margin: 0;
+    max-width: 300px;
+  }
+}
+
+.copy-link {
+  margin: 12px 0;
 }
 </style>

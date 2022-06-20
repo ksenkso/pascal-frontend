@@ -7,45 +7,30 @@
       <nav>
         <ul>
           <li>
-            <a href="#">Главная</a>
+            <router-link to="/">Главная</router-link>
           </li>
           <li>
-            <a href="#">Мои задачи</a>
-          </li>
-          <li>
-            <a href="#">Мои предметы</a>
-          </li>
-          <li>
-            <a href="#">Мои подписки</a>
-          </li>
-          <li>
-            <a href="#">Мои преподаватели</a>
+            <router-link to="/">Мои группы</router-link>
           </li>
         </ul>
       </nav>
     </template>
     <h1>Мои группы</h1>
-    <ul class="list">
-      <li class="list-item">
-        <router-link to="/groups/1">7 "А"</router-link>
-      </li>
-      <li class="list-item">
-        <router-link to="/groups/2">7 "Б"</router-link>
-      </li>
-      <li class="list-item">
-        <router-link to="/groups/3">7 "В"</router-link>
+    <ul v-if="currentUser && currentUser.groups" class="list">
+      <li v-for="group in currentUser.groups" class="list-item">
+        <router-link :to="{ name: 'GROUP_PAGE', params: { id: group._id } }">{{ group.name }}</router-link>
       </li>
     </ul>
     <h1>Мои курсы</h1>
     <ul class="list">
       <li class="list-item">
-        <router-link to="/groups/1">Основы языка Паскаль</router-link>
+        <router-link to="/group/1">Основы языка Паскаль</router-link>
       </li>
       <li class="list-item">
-        <router-link to="/groups/2">Решение типовых задач</router-link>
+        <router-link to="/group/2">Решение типовых задач</router-link>
       </li>
       <li class="list-item">
-        <router-link to="/groups/3">Подготовка к олимпиадам</router-link>
+        <router-link to="/group/3">Подготовка к олимпиадам</router-link>
       </li>
     </ul>
     <h1>Мои задачи</h1>
@@ -64,10 +49,14 @@ import { onMounted } from 'vue';
 import Page from '~/components/common/Page.vue';
 import UserInfo from '~/components/UserInfo.vue';
 import { useCurrentUser } from '~/composables/useCurrentUser';
+import { useRouter } from 'vue-router';
 
 const { currentUser, loadUser } = useCurrentUser()
+const router = useRouter();
 
-onMounted(loadUser);
+onMounted(() => {
+  loadUser();
+});
 
 </script>
 

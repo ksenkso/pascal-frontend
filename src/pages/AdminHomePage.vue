@@ -14,7 +14,7 @@
       <template #row="{ data }">
         <td>{{ data.name }}</td>
         <td>
-          <router-link v-for="group in data.groups" :to="`/groups/${group._id}`">{{ group.name }}</router-link>
+          <router-link v-for="group in data.groups" :to="`/group/${group._id}`">{{ group.name }}</router-link>
         </td>
         <td>
           <InlineSpaced :style="{ justifyContent: 'flex-end', width: '100%' }">

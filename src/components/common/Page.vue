@@ -56,6 +56,10 @@ defineProps({
 
 .sidebar {
   background-color: $light-blue;
+  min-width: 200px;
+  &:empty {
+    display: none;
+  }
 }
 
 .main {

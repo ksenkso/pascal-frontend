@@ -1,4 +1,5 @@
 import { CrudEndpoint } from './utils';
+import { Student } from '~/api/users';
 
 export interface Group {
   _id: string;
@@ -16,6 +17,12 @@ export interface UpdateGroupDto {
 class GroupsEndpoint extends CrudEndpoint<Group, CreateGroupDto, UpdateGroupDto> {
   constructor() {
     super('/group');
+  }
+
+  getStudents(id: string) {
+    return this.transport
+      .get<Student[]>(`${this.baseUrl}/${id}/students`)
+      .then(this.extractData);
   }
 }
 
