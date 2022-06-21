@@ -1,8 +1,9 @@
 import { CrudEndpoint } from '~/api/utils';
 import { Task } from '~/api/tasks';
-import { Student } from '~/api/users';
+import { Student, User } from '~/api/users';
 
 export interface Solution {
+  _id: string;
   code: string
   time: number;
   task: Task;
@@ -11,6 +12,19 @@ export interface Solution {
   output: string;
   messages: string[];
   successful: boolean;
+  comments: Comment[];
+}
+
+export interface Comment {
+  message: string;
+  user: User;
+  solution: Solution;
+}
+
+export interface CreateCommentDto {
+  message: string;
+  user: string;
+  solution: string;
 }
 
 export interface SolutionAssessmentResult {

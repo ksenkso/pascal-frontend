@@ -5,6 +5,7 @@ import { auth } from '~/api/auth';
 import { taskSets } from '~/api/taskSets';
 import { tasks } from '~/api/tasks';
 import { solutions } from '~/api/solutions';
+import { comments } from '~/api/comments';
 
 export const apiClient = {
   groups,
@@ -14,4 +15,5 @@ export const apiClient = {
   taskSets,
   tasks,
   solutions,
+  comments,
 }
