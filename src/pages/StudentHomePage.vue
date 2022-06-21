@@ -33,9 +33,9 @@ onMounted(() => {
 
 const groupTitle = computed(() => {
   if (currentUser.value?.groups.length) {
-    return `Ваша группа: ${currentUser.value.groups[0].name}`
+    return `Ваш класс: ${currentUser.value.groups[0].name}`
   }
-  return 'Ваша группа: загрузка...'
+  return 'Ваш класс: загрузка...'
 })
 </script>
 

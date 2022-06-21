@@ -8,7 +8,7 @@
         <router-link :to="{ name: 'STUDENT_SOLUTIONS', params: { studentId: currentUser._id } }">Мои решения</router-link>
       </li>
       <li v-if="isTeacher">
-        <router-link to="#">Мои группы</router-link>
+        <router-link to="#">Мои классы</router-link>
       </li>
     </ul>
   </nav>

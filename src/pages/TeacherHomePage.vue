@@ -6,7 +6,7 @@
     <template #aside>
       <Navigation />
     </template>
-    <h1>Мои группы</h1>
+    <h1>Мои классы</h1>
     <BasicList  :list="currentUser.groups" v-slot="{ item: group }">
       <router-link :to="{ name: 'GROUP_PAGE', params: { id: group._id } }">{{ group.name }}</router-link>
     </BasicList>

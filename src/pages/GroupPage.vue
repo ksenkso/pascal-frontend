@@ -1,5 +1,5 @@
 <template>
-  <Page title="Группы">
+  <Page title="Классы">
     <template #header>
       <UserInfo :user="currentUser"/>
     </template>
@@ -9,14 +9,14 @@
     <FadeTransition>
       <div v-if="copyPopupVisible" class="copy-popup">
         <div class="copy-popup-content">
-          <p>Ссылка на регистрацию в группе скопирована в буфер обмена</p>
+          <p>Ссылка на регистрацию в классе скопирована в буфер обмена</p>
         </div>
       </div>
     </FadeTransition>
     <template v-if="groupLoading">
       Загрузка...
     </template>
-    <h1 v-if="group">Группа {{ group.name }}</h1>
+    <h1 v-if="group">Класс {{ group.name }}</h1>
     <div class="copy-link">
       <BasicButton @click="copyGroupLink" type="primary">Скопировать ссылку</BasicButton>
     </div>
@@ -52,7 +52,7 @@ const tabs = computed(() => {
   const tabs = [];
   if (group.value) {
     tabs.push({
-      title: 'Студенты',
+      title: 'Ученики',
       name: 'students',
       component: markRaw(StudentsList),
       props: {

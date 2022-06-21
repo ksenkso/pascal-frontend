@@ -22,7 +22,7 @@
             <BasicButton type="primary" @click="fillForm(item); showTaskForm = true">Редактировать</BasicButton>
             <BasicButton type="danger" @click="removeTask(item)">Удалить</BasicButton>
           </InlineSpaced>
-          <BasicButton type="primary" @click="$router.push({ name: 'SOLUTION_PAGE', params: { taskId: item._id } })">Начать выполнение</BasicButton>
+          <BasicButton v-else type="primary" @click="$router.push({ name: 'SOLUTION_PAGE', params: { taskId: item._id } })">Начать выполнение</BasicButton>
         </div>
       </BasicList>
       <p v-else>
