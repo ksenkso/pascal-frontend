@@ -47,7 +47,7 @@ export const routes: RouteRecordRaw[] = [
     component: StudentSolutions
   },
   {
-    name: 'SOLUTION_PAGE',
+    name: 'SOLUTION_SHOW_PAGE',
     path: '/solution/show/:id',
     component: SolutionShowPage
   },

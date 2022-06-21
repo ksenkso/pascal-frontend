@@ -34,6 +34,11 @@ export default defineComponent({
   methods: {
     getCode() {
       return this.codeMirror?.state.doc.toString();
+    },
+    setCode(code: string) {
+      if(this.codeMirror) {
+        this.codeMirror.dispatch({ changes: {from: 0, insert: code} })
+      }
     }
   }
 })

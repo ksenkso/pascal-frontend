@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { formatTime } from '~/utils';
 
 const props = defineProps<{ startTime: number, time: number, isRunning: boolean }>();
 const interval = ref();
@@ -40,19 +41,7 @@ watch(() => props.isRunning, (isRunning) => {
 onBeforeUnmount(() => {
   clearInterval(interval.value);
 });
-const formattedTime = computed(() => {
-  const hours = Math.floor(elapsed.value / 3600);
-  const minutes = Math.floor((elapsed.value - hours * 3600) / 60);
-  const seconds = elapsed.value % 60;
-
-  return [
-    hours,
-    minutes,
-    seconds
-  ]
-    .map(t => t.toString().padStart(2, '0'))
-    .join(':');
-})
+const formattedTime = computed(() => formatTime(elapsed.value))
 </script>
 
 <style scoped>

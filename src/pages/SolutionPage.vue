@@ -18,7 +18,6 @@
         <div class="controls">
           <Timer @tick="time = $event" :is-running="isRunning" />
           <BasicButton type="primary" @click="run">Выполнить</BasicButton>
-          <BasicButton type="primary" @click="send">Отправить</BasicButton>
         </div>
       </div>
       <div class="result-container">
@@ -123,24 +122,6 @@ const goToTasks = () => {
 <style scoped lang="scss">
 @import "src/styles/variables";
 
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-
-  li a {
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    color: #111;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-  }
-}
 .solution-view {
   display: flex;
   column-gap: 18px;

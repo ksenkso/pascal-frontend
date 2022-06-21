@@ -7,6 +7,10 @@ export interface Solution {
   time: number;
   task: Task;
   student: Student;
+  score: number;
+  output: string;
+  messages: string[];
+  successful: boolean;
 }
 
 export interface SolutionAssessmentResult {

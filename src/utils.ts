@@ -54,3 +54,18 @@ export function pluralize(count: number, one: string, two: string, many: string)
 
   return titles[(count % 100 > 4 && count % 100 < 20) ? 2 : cases[(count % 10 < 5) ? count % 10 : 5]];
 }
+
+
+export const formatTime = (time: number) => {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time - hours * 3600) / 60);
+  const seconds = time % 60;
+
+  return [
+    hours,
+    minutes,
+    seconds
+  ]
+    .map(t => t.toString().padStart(2, '0'))
+    .join(':');
+}
