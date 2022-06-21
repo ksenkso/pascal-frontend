@@ -7,7 +7,7 @@ export class CrudEndpoint<Document, CreateDto = any, UpdateDto = any> {
   constructor(protected baseUrl: string) {
   }
 
-  protected extractData (response: AxiosResponse) {
+  protected extractData <T>(response: AxiosResponse<T>) {
     return response.data
   };
 
@@ -31,7 +31,7 @@ export class CrudEndpoint<Document, CreateDto = any, UpdateDto = any> {
 
   update(id: string | number, updateDto: UpdateDto) {
     return this.transport
-      .patch<Document>(this.baseUrl, updateDto)
+      .patch<Document>(`${this.baseUrl}/${id}`, updateDto)
       .then(this.extractData)
   }
 

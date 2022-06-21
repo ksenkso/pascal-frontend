@@ -16,11 +16,9 @@
       </nav>
     </template>
     <h1>Мои группы</h1>
-    <ul v-if="currentUser && currentUser.groups" class="list">
-      <li v-for="group in currentUser.groups" class="list-item">
-        <router-link :to="{ name: 'GROUP_PAGE', params: { id: group._id } }">{{ group.name }}</router-link>
-      </li>
-    </ul>
+    <BasicList  :list="currentUser.groups" v-slot="{ item: group }">
+      <router-link :to="{ name: 'GROUP_PAGE', params: { id: group._id } }">{{ group.name }}</router-link>
+    </BasicList>
     <h1>Мои курсы</h1>
     <ul class="list">
       <li class="list-item">
@@ -50,6 +48,7 @@ import Page from '~/components/common/Page.vue';
 import UserInfo from '~/components/UserInfo.vue';
 import { useCurrentUser } from '~/composables/useCurrentUser';
 import { useRouter } from 'vue-router';
+import BasicList from '~/components/common/BasicList.vue';
 
 const { currentUser, loadUser } = useCurrentUser()
 const router = useRouter();
@@ -78,28 +77,6 @@ nav ul {
 
     &:hover {
       background-color: #f5f5f5;
-    }
-  }
-}
-
-.list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-  width: 100%;
-  max-width: 300px;
-
-  .list-item {
-    border: 1px solid #ccc;
-
-    a {
-      display: block;
-      padding: 12px;
-      text-decoration: none;
-      color: $dark-blue;
     }
   }
 }

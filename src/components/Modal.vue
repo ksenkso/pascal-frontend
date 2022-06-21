@@ -1,8 +1,8 @@
 <template>
 <Teleport to="#modals">
-  <transition name="fade">
-    <div @click.stop="close" class="modal-background" v-if="visible">
-      <div class="modal-window">
+  <FadeTransition>
+    <div @click.self="close" class="modal-background" v-if="visible">
+      <div class="modal-window" :class="{ fullScreen }">
         <div class="modal-header">
           <div class="header-title">
             {{ title }}
@@ -22,13 +22,14 @@
         </div>
       </div>
     </div>
-  </transition>
+  </FadeTransition>
 </Teleport>
 </template>
 
 <script setup lang="ts">
 import BasicButton from '~/components/common/BasicButton.vue';
 import { LoginEvent, RegisterEvent } from '~/components/LoginForm.vue';
+import FadeTransition from '~/components/common/FadeTransition.vue';
 
 const props = defineProps({
   title: {
@@ -43,6 +44,9 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  fullScreen: {
+    type: Boolean,
+  },
 });
 
 const emit = defineEmits<{
@@ -54,7 +58,7 @@ const save = () => {
   emit('save');
 }
 
-const close = () => {
+const close = (e: MouseEvent) => {
   emit('close');
 }
 </script>

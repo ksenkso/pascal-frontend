@@ -26,23 +26,10 @@
       Загрузка...
     </template>
     <h1 v-if="group">Группа {{ group.name }}</h1>
-    <template v-if="!groupLoading && studentsLoading">
-      Загрузка...
-    </template>
     <div class="copy-link">
       <BasicButton @click="copyGroupLink" type="primary">Скопировать ссылку</BasicButton>
     </div>
-    <template v-if="students">
-      <ul class="list">
-        <li v-for="student in students" class="list-item">
-          <a href="#">{{student.name}}</a>
-          <div class="controls">
-            <BasicButton type="primary">Решения</BasicButton>
-            <BasicButton type="danger">Удалить</BasicButton>
-          </div>
-        </li>
-      </ul>
-    </template>
+    <BasicTabs :tabs="tabs" />
   </Page>
 </template>
 
@@ -52,14 +39,16 @@ import Page from '~/components/common/Page.vue';
 import UserInfo from '~/components/UserInfo.vue';
 import BasicButton from '~/components/common/BasicButton.vue';
 import { useCurrentUser } from '~/composables/useCurrentUser';
-import { onMounted, ref } from 'vue';
+import { computed, markRaw, onMounted, ref } from 'vue';
 import { Group } from '~/api/groups';
 import { apiClient } from '~/api';
 import { useRoute } from 'vue-router';
 import { useLoading } from '~/composables/useLoading';
-import { Student } from '~/api/users';
 import FadeTransition from '~/components/common/FadeTransition.vue';
 import { copyTextToClipboard } from '~/utils';
+import BasicTabs from '~/components/common/BasicTabs.vue';
+import StudentsList from '~/components/groups/StudentsList.vue';
+import TaskSetsList from '~/components/groups/TaskSetsList.vue';
 
 const { currentUser } = useCurrentUser();
 const route = useRoute();
@@ -67,9 +56,28 @@ const group = ref<Group | undefined>();
 const getGroup = () => apiClient.groups.getById(route.params.id as string);
 const { isLoading: groupLoading, run: loadGroup } = useLoading(getGroup);
 
-const students = ref<Student[] | undefined>();
-const getStudents = () => apiClient.groups.getStudents(route.params.id as string);
-const { isLoading: studentsLoading, run: loadStudents } = useLoading(getStudents);
+const tabs = computed(() => {
+  const tabs = [];
+  if (group.value) {
+    tabs.push({
+      title: 'Студенты',
+      name: 'students',
+      component: markRaw(StudentsList),
+      props: {
+        group: group.value,
+      },
+    });
+    tabs.push({
+      title: 'Наборы задач',
+      name: 'task-sets',
+      component: markRaw(TaskSetsList),
+      props: {
+        group: group.value,
+      },
+    });
+  }
+  return tabs;
+});
 
 function createGroupLink(id: string) {
   return `${window.location.origin}/register-student?groupId=${id}`;
@@ -87,8 +95,7 @@ const copyGroupLink = () => {
 onMounted(() => {
   loadGroup()
       .then((g) => group.value = g);
-  loadStudents()
-      .then((s) => students.value = s);
+
 });
 </script>
 

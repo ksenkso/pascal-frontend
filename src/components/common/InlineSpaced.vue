@@ -12,5 +12,6 @@
 .inline-spaced {
   display: inline-flex;
   column-gap: 4px;
+  align-items: center;
 }
 </style>
