@@ -99,3 +99,17 @@ export const getCompletedTasks = (taskSet: TaskSet) => {
 
   return tasks[taskSet._id] || [];
 }
+
+export const removeCompletedTask = (task: Task) => {
+  let source = localStorage.getItem(COMPLETED_TASKS);
+  if (!source) {
+    source = '{}';
+  }
+  const tasks = JSON.parse(source) as Record<string, string[]>;
+  if (tasks[task.taskSet._id]) {
+    tasks[task.taskSet._id] = tasks[task.taskSet._id].filter(id => id !== task._id)
+  } else {
+    tasks[task.taskSet._id] = [];
+  }
+  localStorage.setItem(COMPLETED_TASKS, JSON.stringify(tasks));
+}

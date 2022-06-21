@@ -108,7 +108,7 @@ import { CreateTaskDto, SerializedAssessmentData, Task } from '~/api/tasks';
 import Modal from '~/components/Modal.vue';
 import InlineSpaced from '~/components/common/InlineSpaced.vue';
 import Navigation from '~/components/common/Navigation.vue';
-import { getCompletedTasks } from '~/utils';
+import { getCompletedTasks, removeCompletedTask } from '~/utils';
 
 type TaskForm = {
   name: string;
@@ -209,7 +209,11 @@ const fillForm = (item: Task) => {
 }
 
 const removeTask = (task: Task) => {
-  // apiClient.tasks.remove(task._id);
+  apiClient.tasks.delete(task._id)
+      .then(() => {
+        removeCompletedTask(task);
+        taskSet.value!.tasks.splice(taskSet.value!.tasks.indexOf(task), 1);
+      })
 }
 
 const title = computed(() => {
