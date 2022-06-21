@@ -4,6 +4,7 @@ import { users } from './users';
 import { auth } from '~/api/auth';
 import { taskSets } from '~/api/taskSets';
 import { tasks } from '~/api/tasks';
+import { solutions } from '~/api/solutions';
 
 export const apiClient = {
   groups,
@@ -12,4 +13,5 @@ export const apiClient = {
   auth,
   taskSets,
   tasks,
+  solutions,
 }

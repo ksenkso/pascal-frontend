@@ -12,17 +12,7 @@ import { EditorState } from '@codemirror/state';
 export default defineComponent({
   name: 'CodeMirror',
   mounted() {
-      const doc = `program Main;
-var a, b, temp: integer;
-begin
-  writeln('Введите два числа:');
-  readln(a, b);
-  temp := a;
-  a := b;
-  b := temp;
-  writeln('Первое число: ', a);
-  writeln('Второе число: ', b);
-end.`
+      const doc = `\n\n\n\n\n`
       let state = EditorState.create({
         doc,
         extensions: [

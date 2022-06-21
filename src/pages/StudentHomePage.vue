@@ -3,31 +3,39 @@
     <template #header>
       <UserInfo :user="currentUser" />
     </template>
-    <template v-if="currentUser">
-      <h1>Ваши группы</h1>
-      <ul v-if="currentUser.groups.length">
-        <li
-          v-for="group in currentUser.groups"
-          :key="group._id"
-        >
-          {{ group.name }}
-        </li>
-      </ul>
-      <div v-else>
-        Вы не состоите ни в одной группе
-      </div>
-    </template>
+    <h1>{{groupTitle}}</h1>
+    <h2>Список курсов</h2>
+    <BasicList v-if="taskSets" :list="taskSets">
+      <template #default="{ item }">
+        <router-link :to="{ name: 'TASK_SET', params: { id: item._id } }">{{item.name}}</router-link>
+      </template>
+    </BasicList>
   </Page>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import Page from '~/components/common/Page.vue';
 import UserInfo from '~/components/UserInfo.vue';
 import { useCurrentUser } from '~/composables/useCurrentUser';
+import BasicList from '~/components/common/BasicList.vue';
+import { useModel } from '~/composables/useModel';
+import { apiClient } from '~/api';
 
 const { currentUser, loadUser } = useCurrentUser()
+const getTaskSets = () => apiClient.taskSets.findForGroup(currentUser.value!.groups[0]._id);
+const { model: taskSets, run: loadTaskSets } = useModel(getTaskSets)
 
-onMounted(loadUser);
+onMounted(() => {
+  loadUser();
+  loadTaskSets();
+});
+
+const groupTitle = computed(() => {
+  if (currentUser.value?.groups.length) {
+    return `Ваша группа: ${currentUser.value.groups[0].name}`
+  }
+  return 'Ваша группа: загрузка...'
+})
 </script>
 

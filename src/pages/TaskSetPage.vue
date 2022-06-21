@@ -24,8 +24,9 @@
         <BasicButton type="primary" @click="showTaskForm = true">Добавить задачу</BasicButton>
       </div>
       <BasicList v-if="taskSet.tasks.length" :list="taskSet.tasks" v-slot="{ item }">
-        <span class="list-item-content">{{ item.name }}</span>
-        <div class="controls">
+        <router-link class="list-item-content" v-if="isStudent" :to="{ name: 'SOLUTION_PAGE', params: { taskId: item._id } }">{{ item.name }}</router-link>
+        <span v-else class="list-item-content">{{ item.name }}</span>
+        <div v-if="isTeacher || isAdmin" class="controls">
           <InlineSpaced>
             <BasicButton type="primary" @click="fillForm(item); showTaskForm = true">Редактировать</BasicButton>
             <BasicButton type="danger" @click="removeTask(item)">Удалить</BasicButton>
@@ -127,7 +128,7 @@ type TaskForm = {
 
 const reqMsg = { required: 'Это поле обязательно' }
 
-const { currentUser } = useCurrentUser();
+const { currentUser, isAdmin, isTeacher, isStudent } = useCurrentUser();
 
 const route = useRoute();
 const getTaskSet = () => apiClient.taskSets.getById(route.params.id as string);

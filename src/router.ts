@@ -40,7 +40,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     name: 'SOLUTION_PAGE',
-    path: '/solution',
+    path: '/solution/:taskId',
     component: SolutionPage
   },
   {

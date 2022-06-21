@@ -1,4 +1,5 @@
 import { CrudEndpoint } from '~/api/utils';
+import { TaskSet } from '~/api/taskSets';
 
 export type AssessmentType = 'NumberOfLinesAssessment' | 'ContainsTextAssessment';
 
@@ -23,6 +24,8 @@ export interface Task {
   expectedResult: string;
 
   assessments: SerializedAssessment[];
+
+  taskSet: TaskSet;
 }
 
 export interface CreateTaskDto {

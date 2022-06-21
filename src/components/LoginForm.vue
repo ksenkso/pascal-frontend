@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref } from 'vue';
+import { computed, ref } from 'vue';
 import BasicButton from '../components/common/BasicButton.vue';
 import Page from '~/components/common/Page.vue';
 import { useRouter } from 'vue-router';

@@ -66,5 +66,6 @@ defineProps({
   padding: 12px;
   background: #fff;
   flex-grow: 1;
+  max-width: calc(100% - 200px);
 }
 </style>
