@@ -11,10 +11,10 @@
       Загрузка...
     </template>
     <template v-else>
-      <div class="controls">
+      <div v-if="isTeacher || isAdmin" class="controls">
         <BasicButton type="primary" @click="showTaskForm = true">Добавить задачу</BasicButton>
       </div>
-      <BasicList v-if="taskSet.tasks.length" :list="taskSet.tasks" v-slot="{ item }">
+      <BasicList v-if="taskSet.tasks.length" :list="taskSet.tasks" v-slot="{ item, index }">
         <span class="list-item-content" v-if="isStudent">{{ item.name }}</span>
         <span v-else class="list-item-content">{{ item.name }}</span>
         <div class="controls">
@@ -22,7 +22,7 @@
             <BasicButton type="primary" @click="fillForm(item); showTaskForm = true">Редактировать</BasicButton>
             <BasicButton type="danger" @click="removeTask(item)">Удалить</BasicButton>
           </InlineSpaced>
-          <BasicButton v-else type="primary" @click="$router.push({ name: 'SOLUTION_PAGE', params: { taskId: item._id } })">Начать выполнение</BasicButton>
+          <BasicButton v-else-if="canStart(item, index)" type="primary" @click="$router.push({ name: 'SOLUTION_PAGE', params: { taskId: item._id } })">Начать выполнение</BasicButton>
         </div>
       </BasicList>
       <p v-else>
@@ -108,6 +108,7 @@ import { CreateTaskDto, SerializedAssessmentData, Task } from '~/api/tasks';
 import Modal from '~/components/Modal.vue';
 import InlineSpaced from '~/components/common/InlineSpaced.vue';
 import Navigation from '~/components/common/Navigation.vue';
+import { getCompletedTasks } from '~/utils';
 
 type TaskForm = {
   name: string;
@@ -126,9 +127,13 @@ const { currentUser, isAdmin, isTeacher, isStudent } = useCurrentUser();
 const route = useRoute();
 const getTaskSet = () => apiClient.taskSets.getById(route.params.id as string);
 const { model: taskSet, isLoading, run: loadTaskSet } = useModel(getTaskSet)
+const completedTasks = ref([] as string[])
 
 onMounted(() => {
-  loadTaskSet();
+  loadTaskSet()
+      .then(() => {
+        completedTasks.value =  getCompletedTasks(taskSet.value!)
+      });
 });
 
 const showTaskForm = ref(false);
@@ -213,6 +218,14 @@ const title = computed(() => {
   }
   return 'Набор задач';
 });
+
+const canStart = (task: Task, index: number) => {
+  if (index === 0) return true;
+
+  if (!taskSet.value) return false;
+
+  return completedTasks.value.includes(taskSet.value.tasks[index - 1]._id);
+}
 </script>
 
 <style scoped lang="scss">

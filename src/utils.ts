@@ -1,3 +1,6 @@
+import { Task } from '~/api/tasks';
+import { TaskSet } from '~/api/taskSets';
+
 export const bem = (baseClass: string, mods: Record<string, string | string[] | boolean>) => {
   const keys = Object.keys(mods);
   const res: string[] = [];
@@ -68,4 +71,31 @@ export const formatTime = (time: number) => {
   ]
     .map(t => t.toString().padStart(2, '0'))
     .join(':');
+}
+
+const COMPLETED_TASKS = 'COMPLETED_TASKS';
+
+export const completeTask = (task: Task) => {
+  let source = localStorage.getItem(COMPLETED_TASKS);
+  if (!source) {
+    source = '{}';
+  }
+  const tasks = JSON.parse(source) as Record<string, string[]>;
+  if (tasks[task.taskSet._id]) {
+    tasks[task.taskSet._id].push(task._id);
+  } else {
+    tasks[task.taskSet._id] = [task._id];
+  }
+
+  localStorage.setItem(COMPLETED_TASKS, JSON.stringify(tasks));
+}
+
+export const getCompletedTasks = (taskSet: TaskSet) => {
+  let source = localStorage.getItem(COMPLETED_TASKS);
+  if (!source) {
+    source = '{}';
+  }
+  const tasks = JSON.parse(source) as Record<string, string[]>;
+
+  return tasks[taskSet._id] || [];
 }

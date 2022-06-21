@@ -54,6 +54,7 @@ import BasicList from '~/components/common/BasicList.vue';
 import StarRating from '~/components/StarRating.vue';
 import Timer from '~/components/Timer.vue';
 import Navigation from '~/components/common/Navigation.vue';
+import { completeTask } from '~/utils';
 
 const { currentUser } = useCurrentUser();
 const route = useRoute();
@@ -107,6 +108,9 @@ const run = () => {
             }, 500)
             messages.value = result.messages;
             resultVisible.value = true;
+            completeTask(task.value!);
+          } else {
+            alert('Задание выполнено неверно');
           }
         })
   }
