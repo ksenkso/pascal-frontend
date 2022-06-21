@@ -4,16 +4,7 @@
       <UserInfo :user="currentUser"/>
     </template>
     <template #aside>
-      <nav>
-        <ul>
-          <li>
-            <router-link to="/">Главная</router-link>
-          </li>
-          <li>
-            <router-link to="/groups">Мои группы</router-link>
-          </li>
-        </ul>
-      </nav>
+      <Navigation />
     </template>
     <h1>{{title}}</h1>
     <template v-if="!taskSet">
@@ -24,13 +15,14 @@
         <BasicButton type="primary" @click="showTaskForm = true">Добавить задачу</BasicButton>
       </div>
       <BasicList v-if="taskSet.tasks.length" :list="taskSet.tasks" v-slot="{ item }">
-        <router-link class="list-item-content" v-if="isStudent" :to="{ name: 'SOLUTION_PAGE', params: { taskId: item._id } }">{{ item.name }}</router-link>
+        <span class="list-item-content" v-if="isStudent">{{ item.name }}</span>
         <span v-else class="list-item-content">{{ item.name }}</span>
-        <div v-if="isTeacher || isAdmin" class="controls">
-          <InlineSpaced>
+        <div class="controls">
+          <InlineSpaced v-if="isTeacher || isAdmin">
             <BasicButton type="primary" @click="fillForm(item); showTaskForm = true">Редактировать</BasicButton>
             <BasicButton type="danger" @click="removeTask(item)">Удалить</BasicButton>
           </InlineSpaced>
+          <BasicButton type="primary" @click="$router.push({ name: 'SOLUTION_PAGE', params: { taskId: item._id } })">Начать выполнение</BasicButton>
         </div>
       </BasicList>
       <p v-else>
@@ -115,6 +107,7 @@ import BasicButton from '~/components/common/BasicButton.vue';
 import { CreateTaskDto, SerializedAssessmentData, Task } from '~/api/tasks';
 import Modal from '~/components/Modal.vue';
 import InlineSpaced from '~/components/common/InlineSpaced.vue';
+import Navigation from '~/components/common/Navigation.vue';
 
 type TaskForm = {
   name: string;

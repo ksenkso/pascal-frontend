@@ -4,7 +4,10 @@ import Register from '~/pages/Register.vue';
 import UserHomePage from '~/pages/UserHomePage.vue';
 import GroupPage from '~/pages/GroupPage.vue';
 import SolutionPage from '~/pages/SolutionPage.vue';
+import SolutionShowPage from '~/pages/SolutionShowPage.vue';
 import TaskSetPage from '~/pages/TaskSetPage.vue';
+import StudentSolutions from '~/pages/StudentSolutions.vue';
+
 import { useAuth } from '~/composables/useAuth';
 
 // Auto generates routes from vue files under ./pages
@@ -37,6 +40,16 @@ export const routes: RouteRecordRaw[] = [
     props: {
       mode: 'student'
     }
+  },
+  {
+    name: 'STUDENT_SOLUTIONS',
+    path: '/solutions/student/:studentId',
+    component: StudentSolutions
+  },
+  {
+    name: 'SOLUTION_PAGE',
+    path: '/solution/show/:id',
+    component: SolutionShowPage
   },
   {
     name: 'SOLUTION_PAGE',

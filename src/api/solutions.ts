@@ -31,6 +31,10 @@ class SolutionsEndpoint extends CrudEndpoint<Solution, CreateSolutionDto, any> {
   checkSolution(solution: CreateSolutionDto) {
     return this.transport.post<SolutionAssessmentResult>(this.baseUrl, solution).then(this.extractData);
   }
+
+  getForUser(userId: string) {
+    return this.transport.get<Solution[]>(`${this.baseUrl}/user/${userId}`).then(this.extractData);
+  }
 }
 
 export const solutions = new SolutionsEndpoint();

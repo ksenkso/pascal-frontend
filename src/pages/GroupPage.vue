@@ -4,16 +4,7 @@
       <UserInfo :user="currentUser"/>
     </template>
     <template #aside>
-      <nav>
-        <ul>
-          <li>
-            <router-link to="/">Главная</router-link>
-          </li>
-          <li>
-            <router-link to="/groups">Мои группы</router-link>
-          </li>
-        </ul>
-      </nav>
+      <Navigation />
     </template>
     <FadeTransition>
       <div v-if="copyPopupVisible" class="copy-popup">
@@ -49,6 +40,7 @@ import { copyTextToClipboard } from '~/utils';
 import BasicTabs from '~/components/common/BasicTabs.vue';
 import StudentsList from '~/components/groups/StudentsList.vue';
 import TaskSetsList from '~/components/groups/TaskSetsList.vue';
+import Navigation from '~/components/common/Navigation.vue';
 
 const { currentUser } = useCurrentUser();
 const route = useRoute();

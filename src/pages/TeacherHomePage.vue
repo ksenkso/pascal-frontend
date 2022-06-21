@@ -4,16 +4,7 @@
       <UserInfo :user="currentUser"/>
     </template>
     <template #aside>
-      <nav>
-        <ul>
-          <li>
-            <router-link to="/">Главная</router-link>
-          </li>
-          <li>
-            <router-link to="/">Мои группы</router-link>
-          </li>
-        </ul>
-      </nav>
+      <Navigation />
     </template>
     <h1>Мои группы</h1>
     <BasicList  :list="currentUser.groups" v-slot="{ item: group }">
@@ -49,6 +40,7 @@ import UserInfo from '~/components/UserInfo.vue';
 import { useCurrentUser } from '~/composables/useCurrentUser';
 import { useRouter } from 'vue-router';
 import BasicList from '~/components/common/BasicList.vue';
+import Navigation from '~/components/common/Navigation.vue';
 
 const { currentUser, loadUser } = useCurrentUser()
 const router = useRouter();
@@ -61,25 +53,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import "src/styles/variables";
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-
-  li a {
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    color: #111;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-  }
-}
 
 .list-more {
   margin-top: 12px;

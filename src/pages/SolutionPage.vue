@@ -4,25 +4,7 @@
       <UserInfo :user="currentUser"/>
     </template>
     <template #aside>
-      <nav>
-        <ul>
-          <li>
-            <a href="#">Главная</a>
-          </li>
-          <li>
-            <a href="#">Мои задачи</a>
-          </li>
-          <li>
-            <a href="#">Мои предметы</a>
-          </li>
-          <li>
-            <a href="#">Мои подписки</a>
-          </li>
-          <li>
-            <a href="#">Мои преподаватели</a>
-          </li>
-        </ul>
-      </nav>
+      <Navigation />
     </template>
     <template v-if="task">
       <h1>{{ task.name }}</h1>
@@ -72,6 +54,7 @@ import { SolutionAssessmentResult } from '~/api/solutions';
 import BasicList from '~/components/common/BasicList.vue';
 import StarRating from '~/components/StarRating.vue';
 import Timer from '~/components/Timer.vue';
+import Navigation from '~/components/common/Navigation.vue';
 
 const { currentUser } = useCurrentUser();
 const route = useRoute();
