@@ -102,16 +102,18 @@ const run = () => {
           solutionResult.value = result;
           output.value = result.output;
 
-          if (result.successful) {
-            setTimeout(() => {
-              average.value = result.average;
-            }, 500)
-            messages.value = result.messages;
-            resultVisible.value = true;
-            completeTask(task.value!);
-          } else {
-            alert('Задание выполнено неверно');
-          }
+          setTimeout(() => {
+            if (result.successful) {
+              setTimeout(() => {
+                average.value = result.average;
+              }, 500)
+              messages.value = result.messages;
+              resultVisible.value = true;
+              completeTask(task.value!);
+            } else {
+              alert('Задание выполнено неверно');
+            }
+          }, 1500);
         })
   }
 }
